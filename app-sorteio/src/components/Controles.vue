@@ -1,13 +1,26 @@
 <template>
   <div>
-    <button id="buttonSortear">Sortear</button>
-    <button id="buttonLimpar">Limpar</button>
+    <button @click="sortear()" id="buttonSortear">{{btnNomeSortear}}</button>
+    <button @click="limpar()" id="buttonLimpar">{{btnNomeLimpar}}</button>
   </div>
 </template>
 
 <script>
 export default {
- 
+  data(){
+    return {
+      btnNomeSortear: "Sortear",
+      btnNomeLimpar: "Limpar",
+    }
+  },
+  methods:{
+    sortear(){
+      this.$emit('sortear',true)
+    },
+    limpar(){
+      this.$emit('limpar',true)
+    }
+  }
 }
 </script>
 

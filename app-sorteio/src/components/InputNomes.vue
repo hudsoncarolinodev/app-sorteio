@@ -1,14 +1,39 @@
 <template>
    <div class="input-model-nomes">
+       {{sorteioEstado}}
         <label for="nomes">Adicione os nomes</label>
-        <textarea id="nomes" 
+        <textarea v-on:keypress="pegarNomes" id="nomes" 
         placeholder="Adicione os nomes separados por vírgula (João, Maria, José)"></textarea>
     </div>
 </template>
 
 <script>
 export default {
- 
+ props: ['sorteioEstado'],
+
+data(){
+    return {
+        nomes:"",
+        listaNomes:[],
+    }
+},
+methods:{
+    pegarNomes(e){
+        this.nomes = e.target.value
+     
+    },
+    tratarNomes(){
+       console.log(this.nomes.split(","))
+    }
+},
+watch:{
+    sorteioEstado(novo){
+        if(novo){
+            this.tratarNomes()
+        }
+    }
+}
+
 }
 </script>
 

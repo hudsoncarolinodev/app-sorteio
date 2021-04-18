@@ -5,12 +5,14 @@
     <hr>
 
     <label for="selecaoNome">Selecionar o sorteio por nome</label>
-    <input type="checkbox" id="selecaoNome">
+    <input type="checkbox" checked id="selecaoNome">
 
     <div class="formulario">
       <app-input-numeros />
-      <app-input-nomes />
-      <app-controles />
+      <app-input-nomes :sorteioEstado="sorteioEstado" />
+      <app-controles 
+      
+      @sortear="pegarValor()" @limpar="limparCampo()"/>
       <app-resultados />
     </div>
   </main>
@@ -33,8 +35,19 @@ export default {
   
   data(){
     return {
+      sorteioEstado: false,
       titulo:"Sortear números",
       subTitulo:"Crie o sorteio de números facilmente utilizando essa opção, você poderá salvar o sorteio e compartilhar o link com outras pessoas."
+      
+    }
+  },
+  methods:{
+    pegarValor(){
+      this.sorteioEstado = true
+      
+    },
+    limparCampo(){
+
     }
   }
 }
