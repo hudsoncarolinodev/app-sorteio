@@ -4,17 +4,26 @@
     <p>{{subTitulo}}</p>
     <hr>
 
-    <label for="selecaoNome">Selecionar o sorteio por nome</label>
-    <input type="checkbox" checked id="selecaoNome">
+    <label hidden for="selecaoNome">Selecionar o sorteio por nome</label>
+    <input hidden type="checkbox" checked id="selecaoNome">
 
     <div class="formulario">
-      <app-input-numeros />
-      <app-input-nomes :sorteioEstado="sorteioEstado" />
-      <app-controles 
-      
-      @sortear="pegarValor()" @limpar="limparCampo()"/>
-      <app-resultados />
+      <app-input-numeros 
+        :sorteioEstado="sorteioEstado" 
+      />
+      <app-input-nomes 
+        :sorteioEstado="sorteioEstado"
+        @pegarLsitaNomes="listaSorteio = $event"
+      />
+      <app-resultados 
+        :nomeSorteado="nomeSorteado"
+        @sorteioEstado="sorteioEstado = $event"
+      />
+
+      <button @click="sortear()" id="buttonSortear">{{btnNomeSortear}}</button>
+      <button @click="limpar()" id="buttonLimpar">{{btnNomeLimpar}}</button>
     </div>
+    
   </main>
 </template>
 
@@ -22,14 +31,12 @@
 
 import InputNumeros from "../components/InputNumeros";
 import InputNomes from "../components/InputNomes";
-import Controles from "../components/Controles";
 import Resultados from "../components/Resultados";
 
 export default {
   components:{
     "app-input-numeros":InputNumeros,
     "app-input-nomes":InputNomes,
-    "app-controles":Controles,
     "app-resultados":Resultados,
   },
   
@@ -37,17 +44,35 @@ export default {
     return {
       sorteioEstado: false,
       titulo:"Sortear números",
-      subTitulo:"Crie o sorteio de números facilmente utilizando essa opção, você poderá salvar o sorteio e compartilhar o link com outras pessoas."
-      
+      subTitulo:"Crie o sorteio de números facilmente utilizando essa opção, você poderá salvar o sorteio e compartilhar o link com outras pessoas.",
+      btnNomeSortear: "Sortear",
+      btnNomeLimpar: "Limpar",
+      listaSorteio:[],
+      numeroSorteio: 0,
+      nomeSorteado: ""
     }
   },
   methods:{
-    pegarValor(){
-      this.sorteioEstado = true
-      
+    sortear(){
+      this.sorteioEstado = true;
     },
-    limparCampo(){
-
+    gerarsoteiroAleatorio(numeroInicial = 0,numeroFinal){
+     this.numeroSorteio = Math.floor(Math.random() * (numeroFinal - numeroInicial + 1)) + numeroInicial
+    },
+    limpar(){
+     this.sorteioEstado = false;
+    },
+    resultato(){
+      this.nomeSorteado = this.listaSorteio[this.numeroSorteio]
+    }
+  },
+  watch:{
+    listaSorteio(arrayNomes){
+      const arrayCumprimento =  arrayNomes.length
+      this.gerarsoteiroAleatorio(0,arrayCumprimento-1)
+    },
+    numeroSorteio(){
+      this.resultato()
     }
   }
 }
@@ -87,5 +112,14 @@ export default {
         float: left;
         cursor: pointer;
     }
+    button{
+      background-color: #1480fa;
+      border: none;
+      color:#fff;
+      text-transform: uppercase;
+      padding: 10px;
+      font-weight: bold;
+      cursor:pointer;
+  }
      
 </style>

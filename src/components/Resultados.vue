@@ -1,14 +1,35 @@
 <template>
-    <div class="resultado" id="painelResultado">
-        <span id="btnFecharResultado">X</span>
+    <div class="resultado"  v-bind:class="classList" id="painelResultado">
+        <span @click="fechar()" id="btnFecharResultado">X</span>
         <h3>Resultado:</h3>
-        <p id="resultado">1-2-3-4</p>
+        <p id="resultado" >1-2-3-4</p>
     </div>
 </template>
 
 <script>
 export default {
- 
+      props:['nomeSorteado'],
+    data(){
+        return {
+            classList:""
+        }
+    },
+    methods: {
+        mostrarResultado(nome){
+            this.$el.lastElementChild.innerText = nome
+            this.classList = "mostrarResultado"
+        },
+         fechar(){
+             this.$emit('sorteioEstado', false)
+            this.classList = ""
+        }
+    },
+   
+    watch:{
+        nomeSorteado(nome){
+          this.mostrarResultado(nome)
+        }
+    }
 }
 </script>
 

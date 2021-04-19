@@ -1,8 +1,7 @@
 <template>
    <div class="input-model-nomes">
-       {{sorteioEstado}}
         <label for="nomes">Adicione os nomes</label>
-        <textarea v-on:keypress="pegarNomes" id="nomes" 
+        <textarea  id="nomes" 
         placeholder="Adicione os nomes separados por vírgula (João, Maria, José)"></textarea>
     </div>
 </template>
@@ -18,18 +17,24 @@ data(){
     }
 },
 methods:{
-    pegarNomes(e){
-        this.nomes = e.target.value
-     
+    pegarNomes(){
+        this.nomes = this.$el.lastElementChild.value
     },
     tratarNomes(){
-       console.log(this.nomes.split(","))
+       this.listaNomes = this.nomes.split(",")
+       this.$emit('pegarLsitaNomes', this.listaNomes)
+    },
+    limparCampo(){
+        this.$el.lastElementChild.value = ""
     }
 },
 watch:{
     sorteioEstado(novo){
         if(novo){
+            this.pegarNomes()
             this.tratarNomes()
+        }else{
+            this.limparCampo()
         }
     }
 }
